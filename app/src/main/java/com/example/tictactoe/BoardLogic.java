@@ -1,5 +1,8 @@
 package com.example.tictactoe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BoardLogic {
     public final int BOARD_SIZE = 3;
     private CellType [][] board;
@@ -41,8 +44,15 @@ public class BoardLogic {
         this.currentPlayer = this.currentPlayer == Player.X ? Player.O : Player.X;
     }
 
-    public boolean hasWinner() {
-        return isRowWin() || isColWin() || isDiagonalWin();
+    public List<WinType> getCurrentWinningLines() {
+        List<WinType> winTypes = new ArrayList<>();
+
+        if(isRowWin()) winTypes.add(WinType.ROW);
+        if(isColWin()) winTypes.add(WinType.COL);
+        if(isRegularDiagonalWin()) winTypes.add(WinType.REGULAR_DIAGONAL);
+        if(isOppositeDiagonalWin()) winTypes.add(WinType.OPPOSITE_DIAGONAL);
+
+        return  winTypes;
     }
 
     public boolean isTie() {
@@ -97,10 +107,6 @@ public class BoardLogic {
         }
 
         return false;
-    }
-
-    private boolean isDiagonalWin() {
-        return isRegularDiagonalWin() || isOppositeDiagonalWin();
     }
 
     private boolean isRegularDiagonalWin() {
